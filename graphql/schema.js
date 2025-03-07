@@ -8,7 +8,7 @@ const {
   GraphQLID
 } = require('graphql');
 
-const resolvers = require('./resolvers'); // ⬅️ นำเข้า resolvers.js
+const resolvers = require('./resolvers'); 
 
 // DataItem Type
 const DataItemType = new GraphQLObjectType({
@@ -35,16 +35,26 @@ const DataResponseType = new GraphQLObjectType({
 
 // Root Query Type
 const RootQuery = new GraphQLObjectType({
-  name: 'RootQueryType',
+  name: "RootQueryType",
   fields: {
+    // 📌 API: ดึงข้อมูลทั้งหมด (Pagination)
     getAllData: {
       type: DataResponseType,
       args: {
         page: { type: GraphQLInt },
         limit: { type: GraphQLInt }
       },
-      resolve: resolvers.getAllData // ⬅️ เรียกใช้ฟังก์ชัน resolve จาก resolvers.js
+      resolve: resolvers.getAllData // ⬅️ ดึงข้อมูลทั้งหมด
     },
+    
+    // 📌 API: ดึงข้อมูลตาม ID
+    getDataByvalue: {
+      type: new GraphQLList(DataItemType),
+      args: {
+        value: { type: GraphQLString }
+      },
+      resolve: resolvers.getDataByvalue // ⬅️ ดึงข้อมูลตาม value
+    }
   }
 });
 
